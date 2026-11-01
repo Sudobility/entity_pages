@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.190",
+  "version": "0.0.191",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.js",
@@ -49,7 +49,7 @@
   "devDependencies": {
     "@eslint/js": "~10.0.1",
     "@heroicons/react": "~2.2.0",
-    "@sudobility/components": "^5.3.49",
+    "@sudobility/components": "^5.3.50",
     "@sudobility/design": "^1.1.66",
     "@sudobility/entity_client": "^0.0.57",
     "@sudobility/types": "^1.9.76",
@@ -89,8 +89,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Sudobility/entity_pages.git"
-  },
-  "dependencies": {
-    "@sudobility/components": "^5.3.49"
   }
 }

@@ -16,8 +16,8 @@ vi.mock('@sudobility/entity_client', () => ({
   useCreateEntity: (...args: unknown[]) => mockUseCreateEntity(...args),
 }));
 
-// Mock @sudobility/entity-components
-vi.mock('@sudobility/entity-components', () => ({
+// Mock @sudobility/components/entity
+vi.mock('@sudobility/components/entity', () => ({
   EntityList: ({
     entities,
     onSelect,

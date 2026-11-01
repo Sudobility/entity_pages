@@ -26,8 +26,8 @@ vi.mock('@sudobility/entity_client', () => ({
   useCreateInvitation: (...args: unknown[]) => mockUseCreateInvitation(...args),
 }));
 
-// Mock @sudobility/entity-components
-vi.mock('@sudobility/entity-components', () => ({
+// Mock @sudobility/components/entity
+vi.mock('@sudobility/components/entity', () => ({
   MemberList: ({
     members,
     onRemove,

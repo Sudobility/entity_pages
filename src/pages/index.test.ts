@@ -24,8 +24,8 @@ vi.mock('@sudobility/entity_client', () => ({
   useRevokeApiKey: vi.fn(() => ({ mutate: vi.fn() })),
 }));
 
-// Mock @sudobility/entity-components
-vi.mock('@sudobility/entity-components', () => ({
+// Mock @sudobility/components/entity
+vi.mock('@sudobility/components/entity', () => ({
   EntityList: vi.fn(() => null),
   MemberList: vi.fn(() => null),
   InvitationForm: vi.fn(() => null),

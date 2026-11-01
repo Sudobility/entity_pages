@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { ui } from '@sudobility/design';
 import { ContentLayout } from '@sudobility/components';
-import { MemberList, InvitationForm } from '@sudobility/entity-components';
+import { MemberList, InvitationForm } from '@sudobility/components/entity';
 import {
   useEntityMembers,
   useUpdateMemberRole,

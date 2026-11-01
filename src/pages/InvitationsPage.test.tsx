@@ -25,8 +25,8 @@ vi.mock('@sudobility/entity_client', () => ({
     mockUseDeclineInvitation(...args),
 }));
 
-// Mock @sudobility/entity-components
-vi.mock('@sudobility/entity-components', () => ({
+// Mock @sudobility/components/entity
+vi.mock('@sudobility/components/entity', () => ({
   InvitationList: ({
     invitations,
     onAccept,

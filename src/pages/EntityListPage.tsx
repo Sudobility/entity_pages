@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { ui } from '@sudobility/design';
 import { ContentLayout } from '@sudobility/components';
-import { EntityList } from '@sudobility/entity-components';
+import { EntityList } from '@sudobility/components/entity';
 import {
   useEntities,
   useCreateEntity,

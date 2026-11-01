@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { ui } from '@sudobility/design';
 import { ContentLayout } from '@sudobility/components';
-import { InvitationList } from '@sudobility/entity-components';
+import { InvitationList } from '@sudobility/components/entity';
 import {
   useMyInvitations,
   useAcceptInvitation,

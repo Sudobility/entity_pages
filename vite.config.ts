@@ -23,17 +23,17 @@ export default defineConfig({
       fileName: () => `index.js`,
     },
     rollupOptions: {
+      // Externalize all peer/shared packages so consumers supply a single copy.
+      // Critical for React context identity: @sudobility/building_blocks (ApiProvider,
+      // Auth) and @sudobility/components/auth must NOT be bundled, or the app shell
+      // wrapper would read different provider instances than the host app's.
       external: [
-        'react',
+        /^react(\/|$)/,
         'react-dom',
-        'react/jsx-runtime',
-        '@sudobility/entity_client',
-        '@sudobility/components/entity',
-        '@sudobility/components/subscription',
-        '@sudobility/types',
-        '@tanstack/react-query',
-        '@heroicons/react',
-        '@sudobility/components',
+        /^@sudobility\//,
+        /^@tanstack\//,
+        /^@heroicons\//,
+        /^@revenuecat\//,
       ],
       output: {
         exports: 'named',

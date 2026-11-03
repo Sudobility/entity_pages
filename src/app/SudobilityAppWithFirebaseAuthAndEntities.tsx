@@ -17,7 +17,7 @@ import {
   type SudobilityAppWithFirebaseAuthProps,
   useApiSafe,
 } from '@sudobility/building_blocks/firebase';
-import { useAuthStatus } from '@sudobility/components/auth';
+import { useAuthUser } from '@sudobility/auth_lib/auth-js';
 import {
   CurrentEntityProvider,
   EntityClient,
@@ -78,7 +78,7 @@ function DefaultAuthAwareEntityProvider({
   children: ReactNode;
   entityClient: EntityClient;
 }) {
-  const { user } = useAuthStatus();
+  const user = useAuthUser();
   const authUser = useMemo(
     () => (user ? { uid: user.uid, email: user.email } : null),
     [user]

@@ -1,172 +1,95 @@
-# Entity Pages
+# Entity Pages — CLAUDE.md
 
-> **Git policy — never auto-commit or auto-push.** Leave your work in the working tree.
-> Run `git commit`, `git push`, `gh pr create`, or `scripts/push_all.sh` **only when the user
-> explicitly asks in that turn**. Approval for an earlier change does not carry forward, and
-> finishing a task is not permission to commit it.
+> **Git policy — never auto-commit or auto-push.** Leave work in the working tree.
+> Run `git commit`, `git push`, or `gh pr create` **only when the user explicitly
+> asks in that turn**. Approval for an earlier change does not carry forward, and
+> finishing a task is not permission to commit it. Stay on the current branch; do
+> not create feature branches for code changes.
 
-Page containers for entity/organization management in React applications.
+`@sudobility/entity_pages` — React page containers for entity/organization
+management (entities, members, invitations, entity API keys), plus a Firebase-auth
+app shell. Published library, consumed by downstream apps.
 
-**npm**: `@sudobility/entity_pages`
+## Stack
 
-## Tech Stack
+- TypeScript + React 18/19, `@tanstack/react-query` v5.
+- Bun (package manager + runner). Do **not** use npm/yarn/pnpm to install.
+- Build: `tsc` (type-check) → Vite **library mode** → `scripts/fix-esm-imports.mjs`.
+- Tests: Vitest + Testing Library, jsdom (config lives in `vite.config.ts`).
+- Published to **GitHub Packages** (`.npmrc`: `@sudobility:registry=https://npm.pkg.github.com`).
 
-- **Language**: TypeScript
-- **Runtime**: Bun
-- **Package Manager**: Bun (do not use npm/yarn/pnpm for installing dependencies)
-- **Build**: TypeScript compiler (dual ESM/CJS)
-- **UI**: Requires @sudobility/entity-components
-- **Data**: Uses @sudobility/entity_client hooks
-
-## Project Structure
-
-```
-src/
-├── index.ts          # Public exports
-└── pages/            # Page components
-    ├── index.ts      # Page exports
-    ├── EntityListPage.tsx     # Entity selector/list
-    ├── EntitySettingsPage.tsx # Entity settings
-    ├── MembersPage.tsx        # Member management
-    └── InvitationsPage.tsx    # Invitation management
-```
-
-## Commands
+## Commands (verified in package.json)
 
 ```bash
-bun run build        # Build ESM + CJS to dist/
-bun run clean        # Remove dist/
-bun run typecheck    # TypeScript check
-bun run lint         # Run ESLint
-bun test             # Run tests
+bun install
+bun run build         # tsc && vite build && node scripts/fix-esm-imports.mjs
+bun run dev           # vite build --watch
+bun run type-check    # tsc --noEmit
+bun run lint          # eslint .   (also lint:fix)
+bun run format        # prettier --write (also format:check)
+bun run test:unit     # vitest run   (also test:watch)
 ```
 
-## Pages
-
-| Page | Purpose |
-|------|---------|
-| `EntityListPage` | Display and select user's entities |
-| `EntitySettingsPage` | Edit entity name, settings |
-| `MembersPage` | View/add/remove members |
-| `InvitationsPage` | Manage pending invitations |
-
-## Usage
-
-```tsx
-import { EntityListPage, MembersPage } from '@sudobility/entity_pages';
-
-// In your router
-<Route path="/entities" element={<EntityListPage />} />
-<Route path="/entities/:slug/members" element={<MembersPage />} />
-```
-
-## Props Pattern
-
-All pages accept common props:
-```typescript
-interface PageProps {
-  networkClient: NetworkClient;
-  baseUrl: string;
-  token: string;
-  userId: string;
-  entitySlug?: string;
-  onEntityChange?: (entity: Entity) => void;
-  className?: string;
-}
-```
-
-## Peer Dependencies
-
-Required in consuming app:
-- `react` >= 18.0.0
-- `@tanstack/react-query` >= 5.0.0
-- `@sudobility/types` - Common types
-- `@sudobility/entity_client` - Data hooks
-- `@sudobility/entity-components` - UI components
-
-## Publishing
-
-```bash
-bun run build        # Build first
-npm publish          # Publish to npm
-```
+No `verify`, `clean`, `typecheck`, or bare `test` script. Pre-publish gate:
+`bun run type-check && bun run lint && bun run test:unit && bun run build`.
 
 ## Architecture
 
-```
-entity_pages (this package)
-    ├── entity_client (data layer)
-    └── entity-components (UI layer)
-        ↑
-shapeshyft_app (consumes pages)
-```
+- `src/index.ts` — public entry; re-exports pages (from `src/pages`) and the app
+  shell (from `src/app`).
+- `src/pages/` — the four page components + their props types:
+  `EntityListPage`, `MembersManagementPage`, `InvitationsPage`, `ApiKeysPage`.
+  Each takes a `client: EntityClient` and fetches its own data via
+  `@sudobility/entity_client` hooks. **There is no shared `PageProps` base.**
+  Pages needing an `entity` prop also take `EntityWithRole`.
+- `src/app/SudobilityAppWithFirebaseAuthAndEntities.tsx` — wraps
+  `@sudobility/building_blocks`' Firebase-auth app shell with
+  `CurrentEntityProvider`. Builds an `EntityClient` from `apiUrl` (or
+  `VITE_API_URL`); entity calls hit `<apiUrl>/api/v1`. Intentionally
+  subscription-agnostic — apps layer their own provider via the `AppProviders`
+  slot (renders inside the entity context, can read `useCurrentEntity()`).
+- UI comes from `@sudobility/components` and `@sudobility/components/entity`
+  (NOT a package called `entity-components`). Design tokens from `@sudobility/design` (`ui`).
 
-## Code Patterns
+## Build / packaging gotchas
 
-### Page Composition
-```typescript
-// Pages compose hooks + components
-export function MembersPage(props: PageProps) {
-  const { data, isLoading } = useMembers(props.entitySlug, props.token);
+- **ESM only.** `vite.config.ts` `lib.formats: ['es']`; `package.json` exports
+  only `import` → `dist/index.js`. No CJS/UMD output — do not claim "dual ESM/CJS".
+- **`fix-esm-imports.mjs` is required.** `tsc`/Vite emit extensionless relative
+  specifiers (`moduleResolution: "bundler"`); this post-build step rewrites them to
+  explicit `./x.js` / `./x/index.js` so Node's native ESM loader can resolve them.
+  It is idempotent and never fails the build (unresolved specifiers are warnings).
+- **Everything is externalized** — React, `react-dom`, `@tanstack/*`,
+  `@heroicons/*`, `@revenuecat/*`, and all `@sudobility/*`. Critical for React
+  context identity: bundling `@sudobility/building_blocks` or `components` would
+  give the shell a different provider instance than the host app. Missing any peer
+  surfaces as a confusing error in the consumer.
+- **Type-check script is `type-check` (hyphenated).** `bun run typecheck` silently
+  does nothing.
 
-  if (isLoading) return <LoadingState />;
+## Conventions
 
-  return <MembersList members={data} onRemove={handleRemove} />;
-}
-```
+- Prettier: single quotes, `jsxSingleQuote`, semicolons, 2-space, width 80,
+  `arrowParens: avoid`, `trailingComma: es5`.
+- ESLint: most `react-hooks/*` rules and `no-console` are off; `no-explicit-any`
+  off; unused vars error unless `_`-prefixed. `.test.*` files are not linted and
+  are excluded from the tsconfig build.
+- Permission gating mirrors the server: `getPermissionsForRole(entity.userRole)`
+  from `@sudobility/types` (e.g. `ApiKeysPage` hides write controls when
+  `!canManageApiKeys`). Pages with no `entity` prop leave gating to the caller.
+- This package does **not** depend on `entity_service` despite the name — only on
+  `@sudobility/entity_client` (hooks) and `@sudobility/components` (UI), which are
+  separate repos.
 
-### Error Boundaries
-- Each page should be wrapped in an error boundary
-- Pages show inline errors for data fetching failures
+## Publishing
 
-## Workspace Context
+CI (`.github/workflows/ci-cd.yml`) calls `johnqh/workflows` unified-cicd with
+`publish-target: github` on push to `main`/`develop`. Do not run `npm publish` by
+hand unless asked. `firebase` is an **optional** peer (only the app shell needs it).
 
-This project is part of the **ShapeShyft** multi-project workspace at the parent directory. See `../CLAUDE.md` for the full architecture, dependency graph, and build order.
+## Scope notes
 
-## Downstream Impact
-
-| Downstream Consumer | Relationship |
-|---------------------|-------------|
-| `shapeshyft_app` | Direct dependency - renders entity management pages |
-
-After making changes:
-1. Run checks (no `verify` script - see below)
-2. `npm publish`
-3. In `shapeshyft_app`: `bun update @sudobility/entity_pages` -> rebuild
-
-Note: this package depends on `@sudobility/entity_client` and `@sudobility/entity-components`, which are **separate repos outside this workspace**.
-
-## Local Dev Workflow
-
-```bash
-# In this project:
-bun link
-
-# In shapeshyft_app:
-bun link @sudobility/entity_pages
-
-# Rebuild after changes:
-bun run build
-
-# When done, unlink:
-bun unlink @sudobility/entity_pages && bun install
-```
-
-## Pre-Commit Checklist
-
-No `verify` script. Run checks manually:
-
-```bash
-bun run type-check && bun run lint && bun test && bun run build
-```
-
-## Gotchas
-
-- **Typecheck command is `type-check` (hyphenated)** -- differs from most other workspace projects which use `typecheck`. Running `bun run typecheck` will silently do nothing.
-- **This package does NOT depend on `entity_service`** -- despite similar naming. It depends on `@sudobility/entity_client` (frontend hooks) and `@sudobility/entity-components` (UI), which are separate repos.
-- **Vite library mode build** -- produces ESM + UMD. Build is `tsc && vite build`, not just `tsc`.
-- **Heavy peer dependency list (7 packages)** -- missing any causes confusing build errors in consumers.
-
-## Git Workflow
-
-- Do not use feature branches for code changes. Always stay on the current branch.
+Covers entities, members, invitations, and entity-scoped API keys. App-specific
+credentials (LLM provider keys, per-project keys, storage config) stay in the
+consuming app. `plans/IMPROVEMENTS.md` holds a (partly stale) backlog — tests now
+exist, contrary to its "no tests" note.

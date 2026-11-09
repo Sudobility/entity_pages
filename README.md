@@ -4,9 +4,20 @@ Page containers for entity/organization management in React web applications.
 
 ## Installation
 
+`@sudobility/*` packages are published to GitHub Packages, so the scope must be
+pointed at that registry (this repo's `.npmrc` already does so for local work):
+
+```
+@sudobility:registry=https://npm.pkg.github.com
+```
+
 ```bash
 bun add @sudobility/entity_pages
 ```
+
+This package ships **ESM only**. It externalizes React, `@tanstack/*`,
+`@heroicons/*`, `@revenuecat/*`, and every `@sudobility/*` peer, so the consuming
+app must provide a single copy of each (see Peer Dependencies).
 
 ## Usage
 
@@ -49,6 +60,30 @@ const client = new EntityClient({ baseUrl, networkClient });
 
 Each page is exported alongside its props type (`EntityListPageProps`,
 `MembersManagementPageProps`, `InvitationsPageProps`, `ApiKeysPageProps`).
+
+### App shell
+
+The package also exports an app wrapper that layers an entity context on top of
+`@sudobility/building_blocks`' Firebase-auth app shell:
+
+```tsx
+import {
+  SudobilityAppWithFirebaseAuthAndEntities,
+  useCurrentEntity,
+} from '@sudobility/entity_pages';
+
+<SudobilityAppWithFirebaseAuthAndEntities i18n={i18n} apiUrl="https://api.myapp.com">
+  <Routes>{/* ... */}</Routes>
+</SudobilityAppWithFirebaseAuthAndEntities>
+```
+
+It builds an `EntityClient` from the app's network client (`apiUrl` or the
+`VITE_API_URL` env var; entity calls hit `<apiUrl>/api/v1`) and wires
+`CurrentEntityProvider` to the signed-in user. It is deliberately
+subscription-agnostic: an app layers its own subscription provider through the
+`AppProviders` slot, which renders inside the entity context and can read
+`useCurrentEntity()`. Exported alongside its props type
+(`SudobilityAppWithFirebaseAuthAndEntitiesProps`) and `useCurrentEntity`.
 
 ### Props
 
@@ -112,21 +147,39 @@ no `entity` prop leave gating to the caller.
 
 ### Peer Dependencies
 
-- `react` >= 18.0.0
-- `@tanstack/react-query` >= 5.0.0
+Required in the consuming app (all externalized by the build):
+
+- `react` / `react-dom` >= 18 (|| 19)
+- `@tanstack/react-query` >= 5
 - `@sudobility/types` -- shared type definitions
-- `@sudobility/entity_client` -- data hooks
-- `@sudobility/entity-components` -- UI components
+- `@sudobility/entity_client` -- data hooks + `EntityClient`
+- `@sudobility/components` -- UI components (pages import from
+  `@sudobility/components` and `@sudobility/components/entity`)
+- `@sudobility/building_blocks` -- app shell / Firebase auth (for the app wrapper)
+- `@sudobility/auth_lib` -- auth hooks
+- `@sudobility/design` -- design tokens (`ui`)
+- `@heroicons/react` >= 2.2
+- `firebase` >= 11 (|| 12) -- **optional**; only needed for the app wrapper
 
 ## Development
 
 ```bash
-bun run build        # Build to dist/
-bun run dev          # Rebuild on change
-bun run type-check   # TypeScript check (note: hyphenated)
-bun run lint         # ESLint
-bun run format       # Prettier
-bun run test         # Vitest
+bun install           # Install dependencies
+bun run build         # tsc + vite (lib build) + fix-esm-imports -> dist/
+bun run dev           # vite build --watch (rebuild on change)
+bun run type-check    # tsc --noEmit  (note: hyphenated, NOT `typecheck`)
+bun run lint          # ESLint
+bun run lint:fix      # ESLint --fix
+bun run format        # Prettier write
+bun run format:check  # Prettier check
+bun run test:unit     # Vitest (run once)
+bun run test:watch    # Vitest (watch mode)
+```
+
+There is no single `verify` script. Before publishing, run:
+
+```bash
+bun run type-check && bun run lint && bun run test:unit && bun run build
 ```
 
 ## License

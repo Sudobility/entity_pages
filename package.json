@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.218",
+  "version": "0.0.219",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.js",
@@ -40,14 +40,14 @@
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "@tanstack/react-query": "^5.0.0",
-    "@sudobility/building_blocks": "^0.0.378",
-    "@sudobility/components": "^5.3.69",
-    "@sudobility/entity_client": "^0.0.60",
+    "@sudobility/building_blocks": "^0.0.379",
+    "@sudobility/components": "^5.3.70",
+    "@sudobility/entity_client": "^0.0.61",
     "@heroicons/react": "^2.2.0",
-    "@sudobility/types": "^1.10.1",
-    "@sudobility/design": "^1.1.71",
+    "@sudobility/types": "^1.10.2",
+    "@sudobility/design": "^1.1.72",
     "firebase": "^11.0.0 || ^12.0.0",
-    "@sudobility/auth_lib": "^0.0.130"
+    "@sudobility/auth_lib": "^0.0.131"
   },
   "peerDependenciesMeta": {
     "firebase": {
@@ -57,11 +57,11 @@
   "devDependencies": {
     "@eslint/js": "~10.0.1",
     "@heroicons/react": "~2.2.0",
-    "@sudobility/building_blocks": "^0.0.378",
-    "@sudobility/components": "^5.3.69",
-    "@sudobility/design": "^1.1.71",
-    "@sudobility/entity_client": "^0.0.60",
-    "@sudobility/types": "^1.10.1",
+    "@sudobility/building_blocks": "^0.0.379",
+    "@sudobility/components": "^5.3.70",
+    "@sudobility/design": "^1.1.72",
+    "@sudobility/entity_client": "^0.0.61",
+    "@sudobility/types": "^1.10.2",
     "@tanstack/react-query": "~5.104.5",
     "@testing-library/dom": "~10.4.2",
     "@testing-library/jest-dom": "~7.0.1",
@@ -88,7 +88,7 @@
     "vite": "~8.3.5",
     "vite-plugin-dts": "~4.5.4",
     "vitest": "~4.1.12",
-    "@sudobility/auth_lib": "^0.0.130"
+    "@sudobility/auth_lib": "^0.0.131"
   },
   "publishConfig": {
     "access": "public"

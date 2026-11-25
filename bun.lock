@@ -8,7 +8,7 @@
         "@eslint/js": "~10.0.1",
         "@heroicons/react": "~2.2.0",
         "@sudobility/auth_lib": "^0.0.134",
-        "@sudobility/building_blocks": "^0.0.393",
+        "@sudobility/building_blocks": "^0.0.394",
         "@sudobility/components": "^5.3.78",
         "@sudobility/design": "^1.1.72",
         "@sudobility/entity_client": "^0.0.63",
@@ -47,7 +47,7 @@
       "peerDependencies": {
         "@heroicons/react": "^2.2.0",
         "@sudobility/auth_lib": "^0.0.134",
-        "@sudobility/building_blocks": "^0.0.393",
+        "@sudobility/building_blocks": "^0.0.394",
         "@sudobility/components": "^5.3.78",
         "@sudobility/design": "^1.1.72",
         "@sudobility/entity_client": "^0.0.63",
@@ -459,7 +459,7 @@
 
     "@sudobility/auth_lib": ["@sudobility/auth_lib@0.0.134", "https://npm.pkg.github.com/download/@sudobility/auth_lib/0.0.134/57a4fca46f01aa6d9818e8c5b57e1a50788d669b", { "peerDependencies": { "@react-native-firebase/app": ">=18.0.0", "@react-native-firebase/auth": ">=18.0.0", "@sudobility/di": "^1.5.91", "@sudobility/types": "^1.11.2", "@tanstack/react-query": "^5.0.0", "firebase": "^12.7.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-4SZcXQcWkksz7UD/dbL4qlNJOpKowpo9wRwuGFD3AJlCrlWF+sy0kXqeqj7uReEbjDPGWuslKgY0sLraqIz83A=="],
 
-    "@sudobility/building_blocks": ["@sudobility/building_blocks@0.0.393", "https://npm.pkg.github.com/download/@sudobility/building_blocks/0.0.393/534f886c7bd8b1cbb67a37e934e21e89e09d6654", { "peerDependencies": { "@heroicons/react": "^2.0.0", "@sudobility/components": "^5.3.78", "@sudobility/design": "^1.1.72", "@sudobility/navigation": "^0.0.3", "@tanstack/react-query": "^5.0.0", "class-variance-authority": "^0.7.0", "clsx": "^2.0.0", "firebase": "^11.0.0 || ^12.0.0", "i18next": "^23.0.0 || ^24.0.0 || ^25.0.0", "i18next-browser-languagedetector": "^8.0.0", "i18next-http-backend": "^3.0.0", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0", "react-helmet-async": "^2.0.0", "react-i18next": "^14.0.0 || ^15.0.0 || ^16.0.0", "react-router-dom": "^6.0.0 || ^7.0.0", "tailwind-merge": "^2.0.0 || ^3.0.0", "zustand": "^5.0.0" } }, "sha512-vuFc7dZeYlJglyr9IGXwj9AqO/8DU/znA0PHAZAB+8m95VUFW0AfUom/anWh/Fs4I+hy2sie20liPdKGKTIC6A=="],
+    "@sudobility/building_blocks": ["@sudobility/building_blocks@0.0.394", "https://npm.pkg.github.com/download/@sudobility/building_blocks/0.0.394/4101fe6b4e0ae9cf4050167d3ba24dc9decbbf50", { "peerDependencies": { "@heroicons/react": "^2.0.0", "@sudobility/components": "^5.3.78", "@sudobility/design": "^1.1.72", "@sudobility/navigation": "^0.0.3", "@tanstack/react-query": "^5.0.0", "class-variance-authority": "^0.7.0", "clsx": "^2.0.0", "firebase": "^11.0.0 || ^12.0.0", "i18next": "^23.0.0 || ^24.0.0 || ^25.0.0", "i18next-browser-languagedetector": "^8.0.0", "i18next-http-backend": "^3.0.0", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0", "react-helmet-async": "^2.0.0", "react-i18next": "^14.0.0 || ^15.0.0 || ^16.0.0", "react-router-dom": "^6.0.0 || ^7.0.0", "tailwind-merge": "^2.0.0 || ^3.0.0", "zustand": "^5.0.0" } }, "sha512-8pyjpKIU9LZnV8O10mX0kpNJyMb/xFW1RC9Thnax9IVU98OE+FCvD8QYWj89sAN5rGsriEWTMz25drv/e/xQpw=="],
 
     "@sudobility/components": ["@sudobility/components@5.3.78", "https://npm.pkg.github.com/download/@sudobility/components/5.3.78/606110b98bdea83ba5f79986378b2e9fc6fec4b0", { "dependencies": { "jsqr": "^1.4.0" }, "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@heroicons/react": ">=2.0.0", "@radix-ui/react-alert-dialog": ">=1.0.0", "@radix-ui/react-dialog": ">=1.0.0", "@radix-ui/react-label": ">=2.0.0", "@radix-ui/react-select": ">=2.0.0", "@radix-ui/react-slot": ">=1.0.0", "@radix-ui/react-switch": ">=1.0.0", "@radix-ui/react-tabs": ">=1.0.0", "@revenuecat/purchases-js": "^1.0.0", "@sudobility/design": "^1.1.72", "@sudobility/di": "^1.5.91", "@sudobility/types": "^1.11.2", "class-variance-authority": ">=0.7.0", "clsx": ">=2.0.0", "firebase": "^12.0.0", "i18next": ">=23.0.0", "react": ">=18.0.0", "react-dom": ">=18.0.0", "react-i18next": ">=14.0.0", "react-router-dom": ">=6.0.0", "recharts": "^3.0.0", "tailwind-merge": ">=2.0.0", "web-vitals": ">=3.0.0" } }, "sha512-AzoDJCAUQ0CqHh6bcHLvfVr29nVrqsBST2psocAz7TenG2pmipeU6GoJlfnEydNDR3iU1HXNgpEzOuYBKLRRJA=="],
 
